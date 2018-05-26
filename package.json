@@ -1,0 +1,29 @@
+{
+  "name": "deckutiltool",
+  "version": "1.0.0",
+  "description": "Simple tool for organizing MTG decks",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "DPP",
+  "license": "ISC",
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DPP93/DeckUtilTool.git"
+  },
+  "bugs": {
+    "url": "https://github.com/DPP93/DeckUtilTool/issues"
+  },
+  "homepage": "https://github.com/DPP93/DeckUtilTool#readme",
+  "dependencies": {
+    "elektron": "^0.4.1",
+    "express": "^4.16.3",
+    "mocha": "^5.2.0",
+    "mongoose": "^5.1.2",
+    "nodemon": "^1.17.5"
+  }
+}
