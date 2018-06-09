@@ -1,12 +1,28 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var manaTypes = ["RED", "GREEN", "WHITE", "BLUE", "BLACK", "MIX", "NONE"];
+var manaTypes = {
+  RED   : 1,
+  GREEN : 2,
+  WHITE : 3,
+  BLUE  : 4,
+  BLACK : 5,
+  MIX   : 6,
+  NONE  : 7,
+  properties : {
+    1 : {name: "RED"},
+    2 : {name: "GREEN"},
+    3 : {name: "WHITE"},
+    4 : {name: "BLUE"},
+    5 : {name: "BLACK"},
+    6 : {name: "MIX"},
+    7 : {name: "NONE"}
+  }
+}
+
 var ManaCostSchema = new Schema({
-  type: manaTypes,
+  type: String,
   cost: Number
 });
-
-var ManaCost = mongoose.Model
 
 var CardSchema = new Schema({
   name: {
@@ -18,12 +34,12 @@ var CardSchema = new Schema({
     required: true
   },
   color: {
-    type: manaTypes,
+    type: String,
     required: true
   },
   manacost: {
     type: [{
-      mana: manaTypes,
+      mana: String,
       cost: Number
     }],
     required: true
@@ -35,5 +51,6 @@ class DatabaseWrapper {
 
 }
 
+exports.ManaTypes = manaTypes;
 exports.CardSchema = CardSchema;
 exports.ManaCostSchema = ManaCostSchema;

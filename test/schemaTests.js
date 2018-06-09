@@ -5,11 +5,12 @@ var database = require('../database.js');
 describe('SchemaTest', function() {
   it('Card schema should be validated properly', function() {
     var Card = mongoose.model("Card", database.CardSchema);
+    var greenMana = database.ManaTypes.GREEN;
     var card = new Card();
-    card.name = "Dupa";
+    card.name = "Llanovar Elves";
     card.type = "Creature";
-    card.color = "GREEN";
-    card.manacost.push({mana: "GREEN", cost: 1});
+    card.color = database.ManaTypes.properties[greenMana].name;
+    card.manacost.push({mana: database.ManaTypes.properties[greenMana].name, cost: 1});
     card.save(function(error) {
       console.log(error);
       error = card.validateSync();
