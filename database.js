@@ -20,8 +20,14 @@ var manaTypes = {
 }
 
 var ManaCostSchema = new Schema({
-  type: String,
-  cost: Number
+  mana: {
+    type: String,
+    required: true
+  },
+  cost: {
+    type: Number,
+    required: true
+  }
 });
 
 var CardSchema = new Schema({
@@ -39,8 +45,8 @@ var CardSchema = new Schema({
   },
   manacost: {
     type: [{
-      mana: String,
-      cost: Number
+      type: Schema.Types.ObjectId,
+      ref: "ManaCost"
     }],
     required: true
   },
