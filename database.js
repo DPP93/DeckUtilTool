@@ -55,8 +55,25 @@ var CardSchema = new Schema({
 
 class DatabaseWrapper {
 
+  constructor(connectionString)
+  {
+    this.connectionString = connectionString;
+    this.isConnected = false;
+  }
+
+  get connectionStatus()
+  {
+    return this._isConnected;
+  }
+
+  connectDatabase()
+  {
+    mongoose.connect(this.connectionString);
+  }
+
 }
 
 exports.ManaTypes = manaTypes;
 exports.CardSchema = CardSchema;
 exports.ManaCostSchema = ManaCostSchema;
+exports.DatabaseWrapper = DatabaseWrapper;
