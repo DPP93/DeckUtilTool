@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+
 var manaTypes = {
   RED   : 1,
   GREEN : 2,
@@ -41,7 +42,7 @@ var CardSchema = new Schema({
   },
   color: {
     type: String,
-    required: true
+    required: [true, "Card have to contain specified color"]
   },
   manacost: {
     type: [{
