@@ -71,7 +71,6 @@ class DatabaseWrapper {
   {
     mongoose.connect(this.connectionString);
   }
-
 }
 
 exports.ManaTypes = manaTypes;
