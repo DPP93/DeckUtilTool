@@ -3,6 +3,9 @@ var app = express();
 
 var cardRouter = require("./routers/cardRouter.js");
 
+app.use(express.static('public'));
+app.use("/static", express.static('public2'));
+
 app.set('view engine', 'pug');
 app.set('views', './templates');
 
