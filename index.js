@@ -1,6 +1,23 @@
-var database = require("./database.js");
+var express = require('express');
+var app = express();
 
-var DbWrapper = database.DatabaseWrapper;
+var cardRouter = require("./routers/cardRouter.js");
 
-var wrapper = new DbWrapper("mongodb://localhost/mtgDB");
-wrapper.connectDatabase();
+app.use(express.static('public'));
+app.use("/static", express.static('public2'));
+
+app.set('view engine', 'pug');
+app.set('views', './templates');
+
+app.get('/', function(req, res) {
+  res.render('main_view', {
+    object: {
+      name : "Magic the Gathering",
+      number: 12
+    }
+  });
+});
+
+app.use('/cards', cardRouter)
+
+app.listen(3000);
