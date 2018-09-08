@@ -1,0 +1,10 @@
+html
+  head
+    title card
+  body
+    form(action="/card", method="POST")
+      div
+        label(for = "title") Card title:
+        input(name = "title")
+      br        
+      button(type = "submit") Create new card
