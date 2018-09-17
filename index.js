@@ -3,6 +3,7 @@ var bodyParser = require('body-parser');
 var multer = require('multer');
 var upload = multer();
 var cookieParser = require('cookie-parser');
+var session = require('express-session');
 var app = express();
 
 var mongoose = require('mongoose');
@@ -42,11 +43,22 @@ app.use(bodyParser.urlencoded({extended : true}));
 app.use(upload.array());
 
 app.use(cookieParser());
+app.use(session({secret: "This is secretely done"}));
 
 app.get('/cookie', function(req, res) {
   res.cookie('name', 'express').send('cookie set');
   res.cookie('name', 'value', {expire: 360000 + Date.now()});
   console.log('Cookies: ', req.cookies);
+});
+
+app.get('/session', function(req, res) {
+  if (req.session.page_views) {
+    req.session.page_views++;
+    res.send("You visited this page " + req.session.page_views + " times!");
+  } else {
+    req.session.page_views = 1;
+    res.send("You are here for the first time!!!");
+  }
 });
 
 app.post('/form', function(req, res) {
