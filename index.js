@@ -2,6 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var multer = require('multer');
 var upload = multer();
+var cookieParser = require('cookie-parser');
 var app = express();
 
 var mongoose = require('mongoose');
@@ -39,6 +40,14 @@ app.use(bodyParser.json());
 //Allowing to use a qs library
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(upload.array());
+
+app.use(cookieParser());
+
+app.get('/cookie', function(req, res) {
+  res.cookie('name', 'express').send('cookie set');
+  res.cookie('name', 'value', {expire: 360000 + Date.now()});
+  console.log('Cookies: ', req.cookies);
+});
 
 app.post('/form', function(req, res) {
   console.log(req.body);
