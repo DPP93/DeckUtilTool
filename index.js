@@ -159,20 +159,27 @@ app.get('/login', function(req, res){
 });
 
 app.post('/login', function(req, res){
-  var dupa = function(user){
-    console.log("CHUJE MUJE");
-     if(user.id === req.body.id && user.password === req.body.password){
-        req.session.user = user;
-        res.redirect('/protected_page');
-     }
-  };
    console.log(Users);
    if(!req.body.id || !req.body.password){
+     console.log("HASTUR");
       res.render('login', {message: "Please enter both id and password"});
    } else {
-      Users.filter(dupa);
-      res.render('login', {message: "Invalid credentials!"});
-   }
+      var userFound = false;
+      Users.filter(function(user)
+      {
+         if(user.id === req.body.id && user.password === req.body.password){
+            console.log("CHUJE MUJE");
+            userFound = true;
+            req.session.user = user;
+            res.redirect('/protected_page');
+         }
+      });
+      console.log("Rendering");
+      if (!userFound)
+      {
+        res.render('login', {message: "Invalid credentials!"});
+      }
+    };
 });
 
 
