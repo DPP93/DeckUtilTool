@@ -197,4 +197,7 @@ console.log(err);
    res.redirect('/login');
 });
 
+var decks = require('./decks.js');
+app.use('/decks', decks);
+
 app.listen(3000);
