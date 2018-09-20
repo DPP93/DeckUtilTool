@@ -17,6 +17,8 @@ var cardSchema = mongoose.Schema({
 
 var Card = mongoose.model("Card", cardSchema);
 
+var Users = [];
+
 app.use(express.static('public'));
 app.use("/static", express.static('public2'));
 
@@ -43,7 +45,11 @@ app.use(bodyParser.urlencoded({extended : true}));
 app.use(upload.array());
 
 app.use(cookieParser());
-app.use(session({secret: "This is secretely done"}));
+app.use(session({
+  secret: "This is secretely done"
+  // resave: true,
+  // saveUninitialized: true
+}));
 
 app.get('/cookie', function(req, res) {
   res.cookie('name', 'express').send('cookie set');
@@ -109,7 +115,86 @@ app.get("/getCard", function(req, res) {
   Card.find(function(err, response){
    console.log(response);
 });
-})
-// app.use('/cards', cardRouter)
+});
+
+app.get('/signup', function(req, res){
+  res.render('signup', {message: ""});
+});
+
+app.post('/signup', function(req, res){
+  console.log(req.body);
+  if (!req.body.id || !req.body.password) {
+    res.status("400");
+    res.send("Invalid details!");
+  }
+  else {
+    Users.filter(function(user) {
+      if (user.id == req.body.id) {
+        res.render('signup', {message: "User already exists!"});
+      }
+    });
+    var newUser = {id: req.body.id, password: req.body.password};
+    Users.push(newUser);
+    req.session.user = newUser;
+    res.redirect('/protected_page');
+  }
+});
+
+function checkSignIn(req, res, next) {
+  if(req.session.user) {
+    next(); //Proceed to page is session exists
+  } else {
+    var err = new Error("Not logged in");
+    console.log(req.session.user);
+    next(err);
+  }
+};
+
+app.get('/protected_page', checkSignIn, function(req, res){
+   res.render('protected_page', {id: req.session.user.id})
+});
+
+app.get('/login', function(req, res){
+  res.render('login');
+});
+
+app.post('/login', function(req, res){
+   console.log(Users);
+   if(!req.body.id || !req.body.password){
+     console.log("HASTUR");
+      res.render('login', {message: "Please enter both id and password"});
+   } else {
+      var userFound = false;
+      Users.filter(function(user)
+      {
+         if(user.id === req.body.id && user.password === req.body.password){
+            console.log("CHUJE MUJE");
+            userFound = true;
+            req.session.user = user;
+            res.redirect('/protected_page');
+         }
+      });
+      console.log("Rendering");
+      if (!userFound)
+      {
+        res.render('login', {message: "Invalid credentials!"});
+      }
+    };
+});
+
+
+app.get('/logout', function(req, res) {
+  req.session.destroy(function() {
+    console.log("User logged out");
+  });
+  res.redirect("/login");
+});
+
+
+app.use('/protected_page', function(err, req, res, next){
+console.log(err);
+   //User should be authenticated! Redirect him to log in.
+   res.redirect('/login');
+});
 
 app.listen(3000);
