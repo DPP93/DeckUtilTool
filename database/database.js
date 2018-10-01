@@ -30,6 +30,18 @@ class DatabaseWrapper {
       }
     });
   }
+
+  getObjectFromDatabase(mongooseModelObject)
+  {
+    return new Promise((resolve, reject) => {
+      mongooseModelObject.find({}, function(err, response) {
+        if (err) {
+          reject(err);
+        }
+        resolve(response);
+      });
+    });
+  }
 }
 
 exports.DatabaseWrapper = DatabaseWrapper;

@@ -8,7 +8,16 @@ var database = new db.DatabaseWrapper('mongodb://localhost/mtgDB');
 database.connectDatabase();
 
 cardRouter.get('/', function(req, res) {
-  res.render("cardView");
+
+  var response = database.getObjectFromDatabase(cardSchemas.CardModel);
+  response.then(function(response) {
+    console.log("Response in router");
+    console.log(response);
+    res.render("cardView", {cards: response});
+  }).catch(function(error) {
+    res.render("cardView", {cards: []});
+  });
+
 });
 
 cardRouter.post('/', function(req, res) {
