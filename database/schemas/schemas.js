@@ -36,44 +36,19 @@ var CardSchema = new Schema({
     type: String,
     required: true
   },
-  type: {
+  /*type: {
     type: String,
     required: true
   },
   color: {
     type: String,
     required: [true, "Card have to contain specified color"]
-  },
-  manacost: {
-    type: [{
-      type: Schema.Types.ObjectId,
-      ref: "ManaCost"
-    }],
-    required: true
-  },
-  description: String
+  },*/
+  description: {
+    type: String
+  }
 });
 
-class DatabaseWrapper {
-
-  constructor(connectionString)
-  {
-    this.connectionString = connectionString;
-    this.isConnected = false;
-  }
-
-  get connectionStatus()
-  {
-    return this._isConnected;
-  }
-
-  connectDatabase()
-  {
-    mongoose.connect(this.connectionString);
-  }
-}
-
 exports.ManaTypes = manaTypes;
-exports.CardSchema = CardSchema;
-exports.ManaCostSchema = ManaCostSchema;
-exports.DatabaseWrapper = DatabaseWrapper;
+exports.CardModel = mongoose.model("Card", CardSchema);
+exports.ManaCostModel = mongoose.model("ManaCost", ManaCostSchema);

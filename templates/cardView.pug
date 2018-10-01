@@ -1,0 +1,14 @@
+html
+  head
+    title card
+  body
+    form(action="/card", method="POST")
+      div
+        input(name = "name")
+        br        
+        button(type = "submit") Create new card
+      div
+        each card in cards
+          li #{card.name}
+        else
+          li No cards on list
