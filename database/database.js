@@ -22,12 +22,14 @@ class DatabaseWrapper {
 
   insertObjectToDatabase(objectToInsert, mongooseModelObject)
   {
-    objectToInsert.save(function(err, mongooseModelObject){
-      if (err)
-      {
-        console.log("Cannot write to database");
-        console.log(err);
-      }
+    return new Promise((resolve, reject) => {
+      objectToInsert.save(function(err, mongooseModelObject){
+        if (err)
+        {
+          reject(err);
+        }
+        resolve();
+      });
     });
   }
 
@@ -39,6 +41,18 @@ class DatabaseWrapper {
           reject(err);
         }
         resolve(response);
+      });
+    });
+  }
+
+  removeObjectFromDatabase(objectName, mongooseModelObject)
+  {
+    return new Promise((resolve, reject) => {
+      mongooseModelObject.deleteOne({"name": objectName}, function(err) {
+        if (err) {
+          reject(err);
+        }
+        resolve();
       });
     });
   }
