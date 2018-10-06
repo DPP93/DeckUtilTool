@@ -33,7 +33,19 @@ class DatabaseWrapper {
     });
   }
 
-  getObjectFromDatabase(mongooseModelObject)
+  getObjectFromDatabase(cardName, mongooseModelObject)
+  {
+    return new Promise((resolve, reject) => {
+      mongooseModelObject.find({"name": cardName}, function(err, response) {
+        if (err) {
+          reject(err);
+        }
+        resolve(response);
+      });
+    });
+  }
+
+  getObjectsFromDatabase(mongooseModelObject)
   {
     return new Promise((resolve, reject) => {
       mongooseModelObject.find({}, function(err, response) {
@@ -42,6 +54,24 @@ class DatabaseWrapper {
         }
         resolve(response);
       });
+    });
+  }
+
+  updateOneObject(objectOldName, newObjectName, mongooseModelObject)
+  {
+    return new Promise((resolve, reject) => {
+      mongooseModelObject.updateOne({"name": objectOldName},
+      {"name": newObjectName},
+      function(err, response) {
+        if (err ) {
+          reject(err);
+        }
+        if (response.n === 0)
+        {
+          reject("Nothing was updated, the card probably is not existing");
+        }
+        resolve(response);
+      })
     });
   }
 

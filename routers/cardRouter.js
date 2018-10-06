@@ -5,12 +5,12 @@ var cardSchemas = require('../database/schemas/schemas.js');
 
 var database = new db.DatabaseWrapper('mongodb://localhost/mtgDB');
 
-var getCards = (res) => {
-  database.getObjectFromDatabase(cardSchemas.CardModel)
+var getCards = (res, message="") => {
+  database.getObjectsFromDatabase(cardSchemas.CardModel)
   .then(function(response) {
-    res.render("cardView", {cards: response});
+    res.render("cardView", {cards: response, message: message});
   }).catch(function(error) {
-    res.render("cardView", {cards: []});
+    res.render("cardView", {cards: [], message: message});
   });
 };
 
@@ -28,6 +28,15 @@ cardRouter.post('/', function(req, res) {
     getCards(res);
   }).catch(function(error) {
     getCards(res);
+  });
+});
+
+cardRouter.post('/update', function(req, res) {
+  database.updateOneObject(req.body.name, req.body.newName, cardSchemas.CardModel)
+  .then((response) => {
+    res.redirect('/card');
+  }).catch((err) => {
+    res.render('show_message', {message: err, type: "error"});
   });
 });
 
