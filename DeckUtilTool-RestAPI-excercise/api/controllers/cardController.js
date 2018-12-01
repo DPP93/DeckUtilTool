@@ -39,6 +39,7 @@ exports.get_a_card = function (req, res) {
 };
 
 exports.remove_a_card = function (req, res) {
+  console.log("Remove" + req.body);
     Card.remove({"name": req.params.cardName}, function (err) {
         if (err) {
             res.send(err);
