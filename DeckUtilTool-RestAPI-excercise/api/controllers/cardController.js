@@ -21,7 +21,7 @@ exports.create_a_card = function (req, res) {
 };
 
 exports.update_a_card = function (req, res) {
-    Card.findOneAndUpdate({"name": req.params.cardName}, req.body, function (err, card) {
+    Card.findOneAndUpdate({"_id": req.params.id}, req.body, function (err, card) {
         if (err) {
             res.send(err);
         }
@@ -30,7 +30,7 @@ exports.update_a_card = function (req, res) {
 };
 
 exports.get_a_card = function (req, res) {
-    Card.find({"name": req.params.cardName}, function (err, card) {
+    Card.find({"_id": req.params.id}, function (err, card) {
         if (err) {
             res.send(err);
         }
@@ -40,7 +40,7 @@ exports.get_a_card = function (req, res) {
 
 exports.remove_a_card = function (req, res) {
   console.log("Remove" + req.body);
-    Card.remove({"name": req.params.cardName}, function (err) {
+    Card.remove({"_id": req.params.id}, function (err) {
         if (err) {
             res.send(err);
         }
